@@ -11,4 +11,6 @@ Ski Rental Heroku
  
 ## Project Description
 A webpage that provides Ski rental service
-## UML Diagram
+## Burndown Diagram
+For HW5:
+![image](https://github.com/ITworkonline/ski_rental_heroku/blob/main/pics/Burndown_HW5.png)
