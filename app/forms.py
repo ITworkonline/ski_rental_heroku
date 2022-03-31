@@ -29,3 +29,14 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember')
     submit = SubmitField('Sign in')
 
+#manager page check the password
+class ManagerForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), length(min=5, max=20)])
+    submit = SubmitField('check')
+
+#ski form from wtf
+class SkiForm(FlaskForm):
+    ski_brand = StringField('ski_brand', validators=[DataRequired(), length(min=1, max=255)])
+    ski_type = StringField('ski_type', validators=[DataRequired(), length(min=1, max=100)])
+    price = IntegerField('price', validators= [DataRequired()])
+    submit = SubmitField('add in')

@@ -2,6 +2,8 @@ import jwt
 from flask_login import UserMixin
 from app import db, login
 from flask import current_app
+from datetime import datetime
+
 
 @login.user_loader
 def load_user(user_id):
@@ -26,3 +28,23 @@ class User(db.Model, UserMixin):
             return User.query.filter_by(id=data['id']).first()
         except:
             return
+
+class Ski(db.Model):
+    __bind_key__ = 'ski'
+    id = db.Column(db.Integer, primary_key=True)
+    ski_brand = db.Column(db.String(20), nullable=False)
+    ski_type = db.Column(db.String(20), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    availability = db.Column(db.String(20), nullable=False)
+    detail_date = datetime.now()
+    create_date = db.Column(db.DateTime, nullable=False, default=detail_date)
+    modification_time = db.Column(db.DateTime, nullable=False, default=detail_date)
+
+    def __init__(self, ski_brand, ski_type, price, availability):
+        self.ski_brand = ski_brand
+        self.ski_type = ski_type
+        self.price = price
+        self.availability = availability
+
+    def __repr__(self):
+        return '<Ski %r>' % self.ski_brand

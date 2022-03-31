@@ -2,8 +2,8 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, login_required, current_user, logout_user
 
 from app import app, bcrypt, db
-from app.forms import RegisterForm, LoginForm
-from app.models import User
+from app.forms import RegisterForm, LoginForm, ManagerForm, SkiForm
+from app.models import User, Ski
 
 @app.route('/')
 @login_required
@@ -71,7 +71,57 @@ def customer():
 @app.route('/manager', methods=['GET', 'POST'])
 @login_required
 def manager():
-    return render_template('manager.html')
+    form = ManagerForm()
+    password = form.password.data
+    # super user password
+    if password != '12345':
+        flash('password not match', category='danger')
+    else:
+        return redirect(url_for('admin'))
+    return render_template('manager.html', form=form)
+
+#manager sub page
+@app.route('/admin',methods=['GET', 'POST'])
+@login_required
+def admin():
+    return render_template('admin.html')
 
 
+#manager dashboard
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    ski = Ski.query.all()
+    return render_template('dashboard.html', skis=ski)
 
+
+@app.route('/add_ski', methods=['GET', 'POST'])
+@login_required
+def add_ski():
+    form = SkiForm(request.form)
+    if request.method == 'POST' and form.validate():
+        ski_brand = form.ski_brand.data
+        ski_type = form.ski_type.data
+        price = form.price.data
+        availability = 'Yes'
+        insert(ski_brand, ski_type, price, availability)
+
+        flash('Ski added', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('add_ski.html', form=form)
+
+def insert(ski_brand, ski_type, price, availability):
+    ski = Ski(ski_brand=ski_brand, ski_type=ski_type, price=price, availability=availability)
+    db.session.add(ski)
+    db.session.commit()
+
+
+@app.route('/delete_ski/<string:id>', methods=['POST'])
+@login_required
+def delete_ski(id):
+    deleted = Ski.query.filter_by(id=id).first()
+    db.session.delete(deleted)
+    db.session.commit()
+    flash('Ski Deleted', 'success')
+    return redirect(url_for('dashboard'))

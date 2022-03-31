@@ -12,6 +12,7 @@ class Config(object):
 
     #database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///'+os.path.join(basedir, 'app.db')
+    SQLALCHEMY_BINDS = {'ski': 'sqlite:///'+os.path.join(basedir, 'ski.db')}
 
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
