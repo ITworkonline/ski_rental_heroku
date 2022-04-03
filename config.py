@@ -10,9 +10,9 @@ class Config(object):
     #recaptcha key
     #RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY') or 'A-VERY-LONG-RECAPTCHA-KEY'
 
-    #database
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///'+os.path.join(basedir, 'app.db')
-    SQLALCHEMY_BINDS = {'ski': 'sqlite:///'+os.path.join(basedir, 'ski.db')}
+    #database initialization
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///'+os.path.join(basedir, 'app.db') # for user info db
+    SQLALCHEMY_BINDS = {'ski': 'sqlite:///'+os.path.join(basedir, 'ski.db')} # for ski equipment db
 
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

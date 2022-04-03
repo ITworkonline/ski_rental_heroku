@@ -92,7 +92,7 @@ def admin():
 @login_required
 def dashboard():
     ski = Ski.query.all()
-    return render_template('dashboard.html', skis=ski)
+    return render_template('dashboard.html', skis=ski) # return ski db to the front end for later use
 
 
 @app.route('/add_ski', methods=['GET', 'POST'])
