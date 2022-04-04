@@ -62,7 +62,7 @@ def logout():
     return redirect(url_for('login'))
 
 #base customer page
-@app.route('/customer')
+@app.route('/customer', methods=['GET', 'POST'])
 @login_required
 def customer():
     return render_template('customer.html')
