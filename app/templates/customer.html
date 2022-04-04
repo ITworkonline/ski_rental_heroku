@@ -3,6 +3,27 @@
 {% block app_content %}
       <h1>Customer page</h1>
 
+        <table class="table table-striped">
+            <tr>
+                <th>ski_brand</th>
+                <th>ski_type</th>
+                <th>price</th>
+                <th></th>
+            </tr>
+            {% for ski in skis %} <!-- Use the ski db pushed from the back end in routes.py and do a for loop to display each individual row -->
+
+            {% if ski.availability == "Yes" %} <!-- print rows from ski db only if it has availability == Yes -->
+            <tr>
+                <td>{{ski.ski_brand}}</td>
+                <td>{{ski.ski_type}}</td>
+                <td>{{ski.price}}</td>
+                <td><a href="edit_ski/{{ski.id}}" class="btn btn-default pull-right">Rent</a></td>
+            </tr>
+            {% endif %}
+
+            {% endfor %}
+        </table>
+
         <a href=/ >
                 <button class="btn btn-lg" style="position: absolute; left: 10%; right: 20%; bottom: 10%; height:70px; width:140px">
                     back </button>
