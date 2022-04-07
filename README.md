@@ -1,4 +1,6 @@
 # CSCI5828_Group_Project
+![example event parameter](https://github.com/ITworkonline/ski_rental_heroku/actions/workflows/python-app.yml/badge.svg?event=push)
+
 ## Project Name
 Ski Rental Heroku
 
