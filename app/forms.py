@@ -40,3 +40,11 @@ class SkiForm(FlaskForm):
     ski_type = StringField('ski_type', validators=[DataRequired(), length(min=1, max=100)])
     price = IntegerField('price', validators= [DataRequired()])
     submit = SubmitField('add in')
+
+#ski edit form from wtf
+class EditForm(FlaskForm):
+    ski_brand = StringField('ski_brand', validators=[DataRequired(), length(min=1, max=255)])
+    ski_type = StringField('ski_type', validators=[DataRequired(), length(min=1, max=100)])
+    price = IntegerField('price', validators=[DataRequired()])
+    availability = StringField('availability', validators=[DataRequired(), length(min=1, max=255)])
+    submit = SubmitField('update ')
