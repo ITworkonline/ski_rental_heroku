@@ -156,3 +156,17 @@ def edit_ski(id):
         return redirect(url_for('dashboard'))
 
     return render_template('edit_ski.html', form=form)
+
+#choose ski
+@app.route('/customer/<string:ski_brand>', methods=['GET', 'POST'])
+@login_required
+def choose_ski(ski_brand):
+    choosed = Ski.query.filter_by(ski_brand=ski_brand)
+    return render_template('choose_ski.html', skis=choosed)
+
+#booking ski
+@app.route('/customer/pay/<string:id>', methods=['GET', 'POST'])
+@login_required
+def book_ski(id):
+    booked = Ski.query.filter_by(id=id)
+    return render_template('book_ski.html', skis=booked)
