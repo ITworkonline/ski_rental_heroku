@@ -65,7 +65,8 @@ def logout():
 @app.route('/customer', methods=['GET', 'POST'])
 @login_required
 def customer():
-    return render_template('customer.html')
+    ski = Ski.query.all()
+    return render_template('customer.html', skis=ski)
 
 #base manager page
 @app.route('/manager', methods=['GET', 'POST'])
