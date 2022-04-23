@@ -1,45 +1,42 @@
-{% extends "base.html" %}
+{% extends 'base.html'%}
 
 {% block app_content %}
-<h1>Dashboard <small>You can add and modify the storage of the ski equips</small></h1>
-<br>
-<a class ="btn btn-success" href = '/add_ski'>Add Ski equip</a>
+{% if skis != None %}
+    <h1>Dashboard </h1>
 <hr>
 <table class="table table-striped">
     <tr>
-      <th>ski_brand</th>
-      <th>ski_type</th>
-        <th>price</th>
-        <th>availability</th>
-      <th>create date</th>
-      <th>modification date</th>
-      <th></th>
-      <th></th>
+      <th>ski brand</th>
+      <th>ski type</th>
+        <th>ski availability</th>
+        <th>total price($/day)</th>
+        <th></th>
     </tr>
-    {% for ski in skis %} <!-- Use the ski db pushed from the back end in routes.py and do a for loop to display each individual row -->
+    {% for ski in skis %}
       <tr>
         <td>{{ski.ski_brand}}</td>
         <td>{{ski.ski_type}}</td>
-          <td>{{ski.price}}</td>
-          <td>{{ski.availability}}</td>
-        <td>{{ski.create_date}}</td>
-        <td>{{ski.modification_time}}</td>
-        <td><a href="edit_ski/{{ski.id}}" class="btn btn-default pull-right">Edit</a></td>
-        <td>
+        <td>{{ski.availability}}</td>
+        <td>{{ski.price}}</td>
 
-          <form action="{{url_for('delete_ski', id=ski.id)}}" method="post">
-            <input type="hidden" name="_method" value="DELETE">
-            <input type="submit" value="Delete" class="btn btn-danger">
-          </form>
+        <td><a href="/customer/pay/{{ski.id}}" class="btn btn-success pull-right">book</a></td>
+{%endfor%}
+ {% else %}
+    <h1>Dashboard</h1>
+          <hr>
+          <div class="'jumbotron text-center">
+              <br>
+              <br>
+        <p class="lead">
+            Oops...There is no more this type of ski available at any level.
+            <br>
+            Please go back and select other ski type/brand.
+        </p>
+    </div>
 
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
-<br>
-<br>
-  <a href=/admin >
-                <button class="btn btn-lg" style=" left: 10%; right: 20%; bottom: 10%; height:70px; width:140px">
+    {% endif %}
+          <a href=/customer >
+                <button class="btn btn-lg" style="position: absolute; left: 10%; right: 20%; bottom: 10%; height:70px; width:140px">
                     back </button>
             </a>
 {% endblock %}
