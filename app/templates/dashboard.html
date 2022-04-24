@@ -5,7 +5,7 @@
 <br>
 <a class ="btn btn-success" href = '/add_ski'>Add Ski equip</a>
 <hr>
-  <table class="table table-striped">
+<table class="table table-striped">
     <tr>
       <th>ski_brand</th>
       <th>ski_type</th>
@@ -16,7 +16,7 @@
       <th></th>
       <th></th>
     </tr>
-    {% for ski in skis %} <!-- Use the ski db pushed from the back end in routes.py and do a for loop to display each individual row -->
+    {% for ski in skis %}
       <tr>
         <td>{{ski.ski_brand}}</td>
         <td>{{ski.ski_type}}</td>
