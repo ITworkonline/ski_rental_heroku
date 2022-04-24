@@ -176,7 +176,7 @@ def choose_ski(ski_brand):
     filtered_choosed = []
     # check the db if certain brand is availalble or not
     if choosed.first() is None:
-        flash('No certain ski brand available right now, please choose other brands or contact with the manager',
+        flash('No {} available right now, please choose other brands or contact with the manager'.format(ski_brand),
               category='danger')
         print('no brand case')
         return redirect(url_for('customer'))
@@ -184,11 +184,14 @@ def choose_ski(ski_brand):
     for i in range(len(choosed.all())):
         if choosed.all()[i].availability == 'Yes':
             filtered_choosed.append(choosed.all()[i])
+    if filtered_choosed == []:
+        flash('No {} available right now, please choose other brands or contact with the manager'.format(
+            ski_brand),category='danger')
+        print('all booked case')
+        return redirect(url_for('customer'))
 
     if choosed.first().availability == 'Yes':
         return render_template('choose_ski.html', skis=filtered_choosed)
-
-
 
 
 # booking ski
@@ -210,3 +213,25 @@ def successful(id):
     successed.first().modification_time = book_time
     db.session.commit()
     return render_template('successful.html', skis=successed)
+
+
+# show the statistic for every ski brand
+@app.route('/statistic', methods=['GET', 'POST'])
+@login_required
+def statistic():
+    return render_template('statistic.html')
+
+
+# show the summary for all booked ski
+@app.route('/statistic/<string:ski_brand>', methods=['GET', 'POST'])
+@login_required
+def statistic_car(ski_brand):
+    brand_overview = Ski.query.filter_by(ski_brand=ski_brand)
+    count = 0
+    filtered_brand_overview = []
+    for i in range(len(brand_overview.all())):
+        if brand_overview.all()[i].availability != 'Yes':
+            count += brand_overview.all()[i].price
+            filtered_brand_overview.append(brand_overview.all()[i])
+    return render_template('statistic_ski.html', skis=filtered_brand_overview, counts=count)
+
