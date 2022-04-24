@@ -6,14 +6,17 @@ from app import app, bcrypt, db
 from app.forms import RegisterForm, LoginForm, ManagerForm, SkiForm, EditForm
 from app.models import User, Ski
 
+
 @app.route('/')
 @login_required
 def index():
     return render_template('index.html')
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -31,6 +34,7 @@ def register():
         flash('Congrats, registration success! Book the ski now!', category='success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -55,20 +59,23 @@ def login():
         flash('User not exists or password not match', category='danger')
     return render_template('login.html', form=form)
 
-#logout methods
+
+# logout methods
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
-#base customer page
+
+# base customer page
 @app.route('/customer')
 @login_required
 def customer():
     return render_template('customer.html')
 
-#base manager page
+
+# base manager page
 @app.route('/manager', methods=['GET', 'POST'])
 @login_required
 def manager():
@@ -81,14 +88,15 @@ def manager():
         return redirect(url_for('admin'))
     return render_template('manager.html', form=form)
 
-#manager sub page
-@app.route('/admin',methods=['GET', 'POST'])
+
+# manager sub page
+@app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin():
     return render_template('admin.html')
 
 
-#manager dashboard
+# manager dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -112,6 +120,7 @@ def add_ski():
 
     return render_template('add_ski.html', form=form)
 
+
 def insert(ski_brand, ski_type, price, availability):
     ski = Ski(ski_brand=ski_brand, ski_type=ski_type, price=price, availability=availability)
     db.session.add(ski)
@@ -126,6 +135,7 @@ def delete_ski(id):
     db.session.commit()
     flash('Ski Deleted', 'success')
     return redirect(url_for('dashboard'))
+
 
 @app.route('/edit_ski/<string:id>', methods=['GET', 'POST'])
 @login_required
@@ -157,16 +167,46 @@ def edit_ski(id):
 
     return render_template('edit_ski.html', form=form)
 
-#choose ski
+
+# choose ski
 @app.route('/customer/<string:ski_brand>', methods=['GET', 'POST'])
 @login_required
 def choose_ski(ski_brand):
     choosed = Ski.query.filter_by(ski_brand=ski_brand)
-    return render_template('choose_ski.html', skis=choosed)
+    filtered_choosed = []
+    # check the db if certain brand is availalble or not
+    if choosed.first() is None:
+        flash('No certain ski brand available right now, please choose other brands or contact with the manager',
+              category='danger')
+        print('no brand case')
+        return redirect(url_for('customer'))
 
-#booking ski
+    for i in range(len(choosed.all())):
+        if choosed.all()[i].availability == 'Yes':
+            filtered_choosed.append(choosed.all()[i])
+
+    if choosed.first().availability == 'Yes':
+        return render_template('choose_ski.html', skis=filtered_choosed)
+
+
+
+
+# booking ski
 @app.route('/customer/pay/<string:id>', methods=['GET', 'POST'])
 @login_required
 def book_ski(id):
     booked = Ski.query.filter_by(id=id)
     return render_template('book_ski.html', skis=booked)
+
+# successful booking
+@app.route('/successful/<string:id>', methods=['GET', 'POST'])
+@login_required
+def successful(id):
+    availability = 'Booked by ' + current_user.username
+    book_time = datetime.now()
+    # after booking, update the certain ski be 'No' availability
+    successed = Ski.query.filter_by(id=id)
+    successed.first().availability = availability
+    successed.first().modification_time = book_time
+    db.session.commit()
+    return render_template('successful.html', skis=successed)

@@ -43,7 +43,11 @@ class SkiForm(FlaskForm):
     ski_brand = SelectField('ski_brand', choices=[('Nordia', 'Nordia'), ('Blizzard', 'Blizzard'),
                                                   ('Atomic', 'Atomic'), ('Rossignol', 'Rossignol'),
                                                   ('Elan', 'Elan'), ('Santa', 'Santa'), ('Black Crows', 'Black Crows')])
-    ski_type = StringField('ski_type', validators=[DataRequired(), length(min=1, max=100)])
+    ski_type = SelectField('ski_type', choices=[('Skis', 'Skis'), ('Snowboard', 'Snowboard'),
+                                                  ('Poles', 'Poles'), ('Ski Boots', 'Ski Boots'),
+                                                  ('Ski Helmet', 'Ski Helmet'), ('Gloves', 'Gloves'),
+                                                  ('Goggles', 'Goggles'), ('Ski Jacket', 'Ski Jacket'),
+                                                  ('Ski Pants', 'Ski Pants'), ('Backpack', 'Backpack')])
     price = IntegerField('price', validators=[DataRequired()])
     submit = SubmitField('add in')
 
@@ -53,7 +57,11 @@ class EditForm(FlaskForm):
     ski_brand = SelectField('ski_brand', choices=[('Nordia', 'Nordia'), ('Blizzard', 'Blizzard'),
                                                   ('Atomic', 'Atomic'), ('Rossignol', 'Rossignol'),
                                                   ('Elan', 'Elan'), ('Santa', 'Santa'), ('Black Crows', 'Black Crows')])
-    ski_type = StringField('ski_type', validators=[DataRequired(), length(min=1, max=100)])
+    ski_type = SelectField('ski_type', choices=[('Skis', 'Skis'), ('Snowboard', 'Snowboard'),
+                                                  ('Poles', 'Poles'), ('Ski Boots', 'Ski Boots'),
+                                                  ('Ski Helmet', 'Ski Helmet'), ('Gloves', 'Gloves'),
+                                                  ('Goggles', 'Goggles'), ('Ski Jacket', 'Ski Jacket'),
+                                                  ('Ski Pants', 'Ski Pants'), ('Backpack', 'Backpack')])
     price = IntegerField('price', validators=[DataRequired()])
     availability = StringField('availability', validators=[DataRequired(), length(min=1, max=255)])
     submit = SubmitField('update ')
