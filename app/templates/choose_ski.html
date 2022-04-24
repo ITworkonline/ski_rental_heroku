@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+
+{% block app_content %}
+{% if skis != None %}
+    <h1>Dashboard </h1>
+<hr>
+<table class="table table-striped">
+    <tr>
+      <th>ski brand</th>
+      <th>ski type</th>
+        <th>ski availability</th>
+        <th>total price($/day)</th>
+        <th></th>
+    </tr>
+    {% for ski in skis %}
+      <tr>
+        <td>{{ski.ski_brand}}</td>
+        <td>{{ski.ski_type}}</td>
+        <td>{{ski.availability}}</td>
+        <td>{{ski.price}}</td>
+
+        <td><a href="/customer/pay/{{ski.id}}" class="btn btn-success pull-right">book</a></td>
+{%endfor%}
+ {% else %}
+    <h1>Dashboard</h1>
+          <hr>
+          <div class="'jumbotron text-center">
+              <br>
+              <br>
+        <p class="lead">
+            Oops...There is no more this type of ski available at any level.
+            <br>
+            Please go back and select other ski type/brand.
+        </p>
+    </div>
+
+    {% endif %}
+          <a href=/customer >
+                <button class="btn btn-lg" style="position: absolute; left: 10%; right: 20%; bottom: 10%; height:70px; width:140px">
+                    back </button>
+            </a>
+{% endblock %}
