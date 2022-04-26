@@ -175,6 +175,7 @@ def choose_ski(ski_brand):
     choosed = Ski.query.filter_by(ski_brand=ski_brand)
     filtered_choosed = []
     # check the db if certain brand is availalble or not
+    # print(choosed.first())
     if choosed.first() is None:
         flash('No {} available right now, please choose other brands or contact with the manager'.format(ski_brand),
               category='danger')
@@ -190,8 +191,8 @@ def choose_ski(ski_brand):
         print('all booked case')
         return redirect(url_for('customer'))
 
-    if choosed.first().availability == 'Yes':
-        return render_template('choose_ski.html', skis=filtered_choosed)
+    #if filtered_choosed.first().availability == 'Yes':
+    return render_template('choose_ski.html', skis=filtered_choosed)
 
 
 # booking ski

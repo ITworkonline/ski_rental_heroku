@@ -63,5 +63,5 @@ class EditForm(FlaskForm):
                                                   ('Goggles', 'Goggles'), ('Ski Jacket', 'Ski Jacket'),
                                                   ('Ski Pants', 'Ski Pants'), ('Backpack', 'Backpack')])
     price = IntegerField('price', validators=[DataRequired()])
-    availability = StringField('availability', validators=[DataRequired(), length(min=1, max=255)])
+    availability = StringField('availability (if return, enter "Yes")', validators=[DataRequired(), length(min=1, max=255)])
     submit = SubmitField('update ')
