@@ -6,10 +6,10 @@
 <hr>
 <table class="table table-striped">
     <tr>
-      <th>ski brand</th>
-      <th>ski type</th>
-        <th>ski availability</th>
-        <th>total price($/day)</th>
+      <th>Ski Brand</th>
+      <th>Ski Type</th>
+        <th>Ski Availability</th>
+        <th>Total Price ($/day)</th>
         <th></th>
     </tr>
     {% for ski in skis %}
@@ -19,7 +19,7 @@
         <td>{{ski.availability}}</td>
         <td>{{ski.price}}</td>
 
-        <td><a href="/customer/pay/{{ski.id}}" class="btn btn-success pull-right">book</a></td>
+        <td><a href="/customer/pay/{{ski.id}}" class="btn btn-success pull-right">Book</a></td>
 {%endfor%}
  {% else %}
     <h1>Dashboard</h1>
