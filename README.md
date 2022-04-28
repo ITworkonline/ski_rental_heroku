@@ -12,7 +12,7 @@ Ski Rental Heroku
  
  
 ## Project Description
-A webpage that provides Ski rental service
-## Burndown Diagram
-For HW5:
-![image](https://github.com/ITworkonline/ski_rental_heroku/blob/main/pics/Burndown_HW5.png)
+A webpage that provides Ski rental service and can be used by both customers and managers.
+
+To enter the Manager Mode, please use the following *login password: 12345*
+
