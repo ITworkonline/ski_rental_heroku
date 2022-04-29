@@ -27,4 +27,4 @@ def get_weather_result(api_key, city):
         count += 1
     print (TEMP)
 
-get_weather_result("79a907a33e59170de5a57eb9b33bf69d", "Boulder")
+
