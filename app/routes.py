@@ -3,19 +3,35 @@ from flask_login import login_user, login_required, current_user, logout_user
 from datetime import datetime
 
 from app import app, bcrypt, db
-from app.forms import RegisterForm, LoginForm, ManagerForm, SkiForm, EditForm
+from app.forms import RegisterForm, LoginForm, ManagerForm, SkiForm, EditForm, PasswordResetRequestForm, \
+    ResetPasswordForm
 from app.models import User, Ski
+from app.email import send_reset_password_mail
 
+a = 1
+flag = True
 
 @app.route('/')
 @login_required
 def index():
     return render_template('index.html')
 
+@app.route('/key', methods=['GET', 'POST'])
+def weather_req():
+    global flag
+    global a
+    if flag == True:
+        flag = False
+        a = request.data
+        return a
+    return a
 
-@app.route('/about')
+
+@app.route('/about', methods=['GET', 'POST'])
 def about():
-    return render_template('about.html')
+    b = weather_req().decode("utf-8")
+    return render_template('about.html', temp=b)
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -187,11 +203,11 @@ def choose_ski(ski_brand):
             filtered_choosed.append(choosed.all()[i])
     if filtered_choosed == []:
         flash('No {} available right now, please choose other brands or contact with the manager'.format(
-            ski_brand),category='danger')
+            ski_brand), category='danger')
         print('all booked case')
         return redirect(url_for('customer'))
 
-    #if filtered_choosed.first().availability == 'Yes':
+    # if filtered_choosed.first().availability == 'Yes':
     return render_template('choose_ski.html', skis=filtered_choosed)
 
 
@@ -201,6 +217,7 @@ def choose_ski(ski_brand):
 def book_ski(id):
     booked = Ski.query.filter_by(id=id)
     return render_template('book_ski.html', skis=booked)
+
 
 # successful booking
 @app.route('/successful/<string:id>', methods=['GET', 'POST'])
@@ -236,3 +253,34 @@ def statistic_car(ski_brand):
             filtered_brand_overview.append(brand_overview.all()[i])
     return render_template('statistic_ski.html', skis=filtered_brand_overview, counts=count)
 
+
+@app.route('/send_password_reset_request', methods=['GET', 'POST'])
+def send_password_reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = PasswordResetRequestForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+        token = user.generate_reset_password_token()
+        send_reset_password_mail(user, token)
+        flash('Password reset request mail is set! Please check your mail.', category='info')
+    return render_template('send_password_reset_request.html', form=form)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user = User.check_reset_password_token(token)
+        if user:
+            user.password = bcrypt.generate_password_hash(form.password.data)
+            db.session.commit()
+            flash('Your password reset is Done! You can login now', category='info')
+            return redirect(url_for('login'))
+        else:
+            flash('The user is not exist', category='info')
+            return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)
