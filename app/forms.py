@@ -65,3 +65,19 @@ class EditForm(FlaskForm):
     price = IntegerField('price', validators=[DataRequired()])
     availability = StringField('availability (if return, enter "Yes")', validators=[DataRequired(), length(min=1, max=255)])
     submit = SubmitField('update ')
+
+# reset password
+class PasswordResetRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Send')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if not user:
+            raise ValidationError('Email not exists.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), length(min=5, max=20)])
+    confirm = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')
