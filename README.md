@@ -23,21 +23,21 @@ To enter the Manager Mode, please use the following *login password: 12345*
 
 ## File map
 * app
-  * templates(html). 
+  * templates(html)
 
-  * __init__.py. 
+  * __init__.py
 
-  * models.py. 
+  * models.py
 
-  * form.py. 
+  * form.py
 
-  * route.py. 
+  * route.py
  
   * email.py
 
-* config.py. 
+* config.py
 
-* requirements.txt. 
+* requirements.txt
 
 * run.py  
 
