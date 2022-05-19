@@ -4,6 +4,9 @@
 ## Project Name
 Ski Rental Heroku
 
+## Access link
+https://flask-deploy-ski.herokuapp.com/
+
 ## Team Member
  Jie Wang <br>
  Yvonne Liu <br>
@@ -18,3 +21,35 @@ By signning into this webpage, you can click on the Customer Mode to browse the 
 
 To enter the Manager Mode, please use the following *login password: 12345*
 
+## File map
+* app
+  * templates(html). 
+
+  * __init__.py. 
+
+  * models.py. 
+
+  * form.py. 
+
+  * route.py. 
+ 
+  * email.py
+
+* config.py. 
+
+* requirements.txt. 
+
+* run.py  
+
+## Run command
+``` python
+python run.py
+```
+To start consumer and producer (require to install RabbitMQ)
+``` python
+python producer.py
+python consumer.py
+```
+
+## More Info: design decisions, software architecture
+https://github.com/ITworkonline/ski_rental_heroku/wiki
